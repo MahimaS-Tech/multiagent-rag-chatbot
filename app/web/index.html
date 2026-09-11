@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Evidence · Multiagent RAG</title><link rel="stylesheet" href="/assets/styles.css"><script defer src="/assets/app.js"></script></head>
+<body><header><div><small>MULTIAGENT KNOWLEDGE ASSISTANT</small><h1>Evidence</h1></div><span id="mode">Checking service…</span></header>
+<main><section class="card"><h2>Connect</h2><p>Use a bearer token from the included command-line tool. Tokens stay in this page's memory, not browser storage.</p>
+<form id="connect"><input id="token" type="password" autocomplete="off" placeholder="Bearer token" required aria-label="Bearer token"><button>Connect</button></form><p id="notice" role="status"></p></section>
+<div class="layout"><aside><section class="card"><h2>Knowledge base</h2><p>Supported files: UTF-8 text and Markdown. Documents must be ready before they can answer questions.</p>
+<form id="upload"><label>Title<input id="title" value="Knowledge document" maxlength="200"></label><label>Text<textarea id="text" rows="5" placeholder="Paste a source, or choose a file below."></textarea></label><label>File<input id="file" type="file" accept=".txt,.md"></label>
+<label>Visibility<select id="visibility"><option value="private">Only me</option><option value="tenant">My tenant</option></select></label><button>Add document</button></form>
+<div class="row"><h3>Documents</h3><button id="refresh" class="secondary">Refresh</button></div><div id="documents"></div></section>
+<section class="card"><h2>Reviewed learning</h2><p>Corrections need consent, original source evidence, and approval by a different administrator. The model's weights are not retrained.</p><button id="reviews" class="secondary">Load review queue</button><div id="proposals"></div></section></aside>
+<section class="card chat"><div class="row"><h2>Ask your documents</h2><button id="new-chat" class="secondary">New conversation</button></div><p>Planner → Retriever → Answerer → Verifier. Unverified drafts are never displayed.</p><div id="messages" aria-live="polite"><p class="empty">Upload a source, wait for “ready,” then ask a question.</p></div>
+<form id="chat"><label>Your question<textarea id="question" rows="3" maxlength="6000" required placeholder="What is the refund policy?"></textarea></label><div class="row"><span id="progress"></span><button id="send">Ask</button></div></form></section></div>
+<footer>Evidence checks reduce mistakes, but do not guarantee truth. Source quality and human review still matter.</footer></main></body></html>

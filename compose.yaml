@@ -1,0 +1,121 @@
+x-app: &app
+  image: multiagent-rag-chatbot:dev
+  build:
+    context: .
+    target: runtime
+    args:
+      INSTALL_LANGGRAPH: ${INSTALL_LANGGRAPH:-false}
+  env_file: .env
+  init: true
+  restart: unless-stopped
+  stop_grace_period: 120s
+  read_only: true
+  tmpfs:
+    - /tmp:size=64m,mode=1777
+  security_opt:
+    - no-new-privileges:true
+  cap_drop: [ALL]
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: chatbot
+      POSTGRES_DB: chatbot
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run scripts/configure.py first}
+    volumes: [postgres-data:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U chatbot -d chatbot"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7.4-alpine
+    environment:
+      REDISCLI_AUTH: ${REDIS_PASSWORD:?Run scripts/configure.py first}
+    command: [redis-server, --appendonly, "yes", --requirepass, "${REDIS_PASSWORD:?Run scripts/configure.py first}"]
+    volumes: [redis-data:/data]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  migrate:
+    <<: *app
+    restart: "no"
+    command: [python, -m, app.cli, migrate]
+    depends_on:
+      postgres: {condition: service_healthy}
+
+  api:
+    <<: *app
+    ports: ["127.0.0.1:8000:8000"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  worker:
+    <<: *app
+    command: [python, -m, app.cli, worker]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -m, app.cli, worker-health]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  postgres-test:
+    profiles: [test]
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: disposable-test-only
+      POSTGRES_DB: rag_test
+    tmpfs: [/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U test -d rag_test"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  redis-test:
+    profiles: [test]
+    image: redis:7.4-alpine
+    command: [redis-server, --save, "", --appendonly, "no"]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  tests:
+    profiles: [test]
+    image: multiagent-rag-chatbot-tests:dev
+    build:
+      context: .
+      target: test
+      args: {INSTALL_LANGGRAPH: "true"}
+    environment:
+      TEST_POSTGRES_URL: postgresql+psycopg://test:disposable-test-only@postgres-test:5432/rag_test
+      TEST_REDIS_URL: redis://redis-test:6379/0
+    depends_on:
+      postgres-test: {condition: service_healthy}
+      redis-test: {condition: service_healthy}
+    command: [python, -m, pytest, -q, --cov=app, --cov-report=term-missing]
+
+volumes:
+  postgres-data:
+  redis-data:
