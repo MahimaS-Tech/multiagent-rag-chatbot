@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rag-config
+  namespace: rag-chatbot
+data:
+  ENVIRONMENT: production
+  PROVIDER: openai
+  ORCHESTRATOR: native
+  AUTO_MIGRATE: 'false'
+  REDACT_PII: 'true'
+  JWT_ALGORITHM: RS256
+  JWT_ISSUER: https://your-identity-provider.example/
+  JWT_AUDIENCE: rag-chatbot
+  JWT_PUBLIC_KEY: REPLACE_WITH_IDENTITY_PROVIDER_RSA_PUBLIC_KEY_PEM
+  MAX_CONCURRENT_CHATS: '16'
+  DB_CONCURRENCY: '12'
+  WORKER_CONCURRENCY: '2'
+  RATE_LIMIT_PER_MINUTE: '60'
