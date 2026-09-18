@@ -1,0 +1,13 @@
+# Top-level versions match the isolated verification environment.
+# Infrastructure extras are bounded but were not installed in that environment.
+fastapi==0.128.2
+uvicorn==0.48.0
+pydantic==2.13.4
+pydantic-settings==2.14.1
+SQLAlchemy==2.0.50
+httpx==0.28.1
+PyJWT[crypto]==2.13.0
+python-multipart==0.0.29
+prometheus-client==0.25.0
+psycopg[binary]>=3.2,<4
+redis>=6,<8
