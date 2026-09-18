@@ -1,0 +1,67 @@
+{
+  "passed": 6,
+  "total": 6,
+  "cases": [
+    {
+      "id": "refund-window",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "required_text": true,
+        "citations": true
+      },
+      "demo_mode": true
+    },
+    {
+      "id": "order-number",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "required_text": true,
+        "citations": true
+      },
+      "demo_mode": true
+    },
+    {
+      "id": "refund-payment",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "required_text": true,
+        "citations": true
+      },
+      "demo_mode": true
+    },
+    {
+      "id": "enterprise-support",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "required_text": true,
+        "citations": true
+      },
+      "demo_mode": true
+    },
+    {
+      "id": "unknown",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "required_text": true,
+        "citations": true
+      },
+      "demo_mode": true
+    },
+    {
+      "id": "override",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "required_text": true,
+        "citations": true
+      },
+      "demo_mode": true
+    }
+  ],
+  "scope": "Synthetic smoke gate only; not a measured production accuracy rate."
+}

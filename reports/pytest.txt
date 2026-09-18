@@ -1,0 +1,33 @@
+........................................................................ [ 53%]
+...........................................................ssss          [100%]
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.5-final-0 ________________
+
+Name                Stmts   Miss  Cover   Missing
+-------------------------------------------------
+app/__init__.py         1      0   100%
+app/agents.py         133     22    83%   17, 20, 22, 30, 96, 118, 142-143, 157-170
+app/api.py            226     11    95%   41-42, 51, 55, 65, 113, 165, 204, 210, 239-240
+app/cli.py             58     58     0%   1-66
+app/config.py          70      9    87%   54, 58, 60, 64-69
+app/controls.py        70      7    90%   19, 24, 62-63, 72-73, 78
+app/database.py        60     12    80%   18, 21, 39-42, 56-57, 61, 65-68, 74
+app/errors.py           8      0   100%
+app/models.py         116      2    98%   10, 23
+app/providers.py      226     18    92%   83, 157-158, 190-192, 197, 199, 210-217, 237, 253, 281
+app/repository.py     369     38    90%   83-86, 135, 148, 150, 152, 178-179, 198, 210, 236, 248, 258-273, 292-294, 399-402, 412-414, 442, 444, 448, 457, 482, 496
+app/retrieval.py       48      2    96%   36, 64
+app/schemas.py         98      4    96%   47, 69, 117, 129
+app/security.py        36      0   100%
+app/service.py         88      5    94%   59-60, 78, 92, 102
+app/text.py            45      3    93%   45-46, 52
+app/worker.py          85     41    52%   22-29, 39, 42, 50, 53, 64-93
+-------------------------------------------------
+TOTAL                1737    232    87%
+Coverage JSON written to file reports/coverage.json
+=========================== short test summary info ============================
+SKIPPED [1] integration_tests/test_external_backends.py:47: TEST_POSTGRES_URL not configured; PostgreSQL not tested
+SKIPPED [1] integration_tests/test_external_backends.py:61: TEST_POSTGRES_URL not configured; PostgreSQL not tested
+SKIPPED [1] integration_tests/test_external_backends.py:76: TEST_REDIS_URL not configured; Redis not tested
+SKIPPED [1] integration_tests/test_external_backends.py:94: could not import 'langgraph': No module named 'langgraph'
+131 passed, 4 skipped in 7.07s

@@ -1,0 +1,39 @@
+{
+  "runtime": "3.13.5",
+  "checks": {
+    "python_compile": "passed",
+    "javascript_syntax": "passed (not a browser interaction test)",
+    "yaml_parse": "passed: 17 files (syntax only)",
+    "development_configuration": "passed: generated secrets, private file permissions, overwrite refusal",
+    "separate_process_http_smoke": {
+      "smoke_test": "passed",
+      "demo_mode": true,
+      "agent_steps": [
+        "planner",
+        "retriever",
+        "answerer",
+        "verifier"
+      ]
+    },
+    "seeded_fixture_evaluation": {
+      "passed": 6,
+      "total": 6,
+      "scope": "Synthetic smoke gate only; not a measured production accuracy rate."
+    },
+    "worker_process_health": "passed",
+    "graceful_process_exit": [
+      -15,
+      0
+    ]
+  },
+  "not_run": [
+    "Real OpenAI model/embedding requests",
+    "Real PostgreSQL and Redis integration tests",
+    "Optional LangGraph execution",
+    "Docker image build or Compose deployment",
+    "Kubernetes cluster/schema-policy validation or deployment",
+    "Browser automation",
+    "Load/soak benchmarks and real infrastructure failover",
+    "Dependency/image vulnerability scans"
+  ]
+}
